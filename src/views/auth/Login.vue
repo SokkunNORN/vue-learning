@@ -99,7 +99,7 @@ export default {
       });
 
       this.isLoading = false;
-      localStorage.setItem("catchUser", data);
+      localStorage.setItem("catchUser", JSON.stringify(data));
       this.$router.push("/");
     }
   }
