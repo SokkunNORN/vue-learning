@@ -9,28 +9,41 @@
                 <v-card
                   class="pa-8 mx-auto"
                   max-width="400">
-                  <h2 class="mt-6 mb-6 text-center">Login</h2>
+                  <v-progress-linear indeterminate :active="false" :top="true" :absolute="true"></v-progress-linear>
 
                   <v-card-text>
+                    <div class="text-center login-account-icon-container">
+                      <v-icon size="80" color="primary" class="login-icon">{{ icons.mdiAccountCircle }}</v-icon>
+                    </div>
+                    
+                    <h2 class="mt-8 mb-8 text-center">Login</h2>
+
                     <v-text-field
                       label="Username"
                       type="text"
+                      :append-icon="icons.mdiAccount"
+                      v-model="username"
+                      :rules="[() => !!username || 'Username field is required!']"
                       outlined
                       dense
                     ></v-text-field>
 
-                    
                     <v-text-field
                       label="Password"
-                      type="password"
+                      :type="isShowPassword ? 'text' : 'password'"
+                      :append-icon="isShowPassword ? icons.mdiEye : icons.mdiEyeOff"
+                      @click:append="isShowPassword = !isShowPassword"
+                      v-model="password"
+                      :rules="[() => !!password || 'Password field is required!']"
                       outlined
                       dense
                     ></v-text-field>
 
                     <v-btn
-                      class="mb-4 mt-4"
+                      class="mb-4 mt-6"
                       color="error"
-                      disabled
+                      :disabled="!username || !password ? true : false"
+                      @click="submit"
                       block
                     >
                       Login
@@ -46,15 +59,41 @@
 </template>
 
 <script>
+import { mdiAccountCircle, mdiAccount, mdiEye, mdiEyeOff } from '@mdi/js'
+
 export default {
   name: "Login",
 
   data: () => ({
-    
-  })
+    username: '',
+    password: '',
+    icons: {
+      mdiAccountCircle,
+      mdiAccount,
+      mdiEye,
+      mdiEyeOff
+    },
+    isShowPassword: false
+  }),
+
+  methods: {
+    submit: function () {
+
+    }
+  }
 }
 </script>
 
-<style>
+<style scoped>
+.login-account-icon-container {
+  position: absolute;
+  right: 0;
+  left: 0;
+  top: -40px;
+}
 
+.login-icon {
+  background-color: white;
+  border-radius: 50%;
+}
 </style>
