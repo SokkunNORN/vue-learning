@@ -1,14 +1,15 @@
 <template>
   <v-app>
-      <v-container bg fill-height grid-list-md text-center>
+      <v-container bg fill-height grid-list-md text-center fluid>
         <v-layout row wrap align-center>
           <v-flex>
             <v-row  align="center" justify="center">
               <v-col
-                cols="4">
+                cols="12">
                 <v-card
-                  class="pa-6">
-                  <h2 class="mt-4 mb-4 text-center">Login</h2>
+                  class="pa-8 mx-auto"
+                  max-width="400">
+                  <h2 class="mt-6 mb-6 text-center">Login</h2>
 
                   <v-card-text>
                     <v-text-field
