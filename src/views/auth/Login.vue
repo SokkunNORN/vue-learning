@@ -99,7 +99,8 @@ export default {
       });
 
       this.isLoading = false;
-      console.log(data);
+      localStorage.setItem("catchUser", data);
+      this.$router.push("/");
     }
   }
 };
