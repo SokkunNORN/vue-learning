@@ -4,6 +4,8 @@ import Home from "../views/Home.vue";
 
 Vue.use(VueRouter);
 
+export const lazyView = name => () => import(`../views/${name}.vue`);
+
 const routes = [
   {
     path: "/",
@@ -11,16 +13,9 @@ const routes = [
     component: Home
   },
   {
-    path: "/about",
-    name: "About",
-    component: () =>
-      import(/* webpackChunkName: "about" */ "../views/About.vue")
-  },
-  {
     path: "/login",
     name: "Login",
-    component: () =>
-      import("../views/auth/Login.vue")
+    component: lazyView("auth/Login")
   }
 ];
 
