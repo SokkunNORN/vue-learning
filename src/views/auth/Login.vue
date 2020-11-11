@@ -8,7 +8,7 @@
               <v-card class="pa-8 mx-auto" max-width="400">
                 <v-progress-linear
                   indeterminate
-                  :active="false"
+                  :active="isLoading"
                   :top="true"
                   :absolute="true"
                 ></v-progress-linear>
@@ -28,6 +28,7 @@
                     :append-icon="icons.mdiAccount"
                     v-model="username"
                     :rules="[() => !!username || 'Username field is required!']"
+                    :disabled="isLoading"
                     outlined
                     dense
                   ></v-text-field>
@@ -41,14 +42,17 @@
                     @click:append="isShowPassword = !isShowPassword"
                     v-model="password"
                     :rules="[() => !!password || 'Password field is required!']"
+                    :disabled="isLoading"
                     outlined
                     dense
                   ></v-text-field>
 
                   <v-btn
                     class="mb-4 mt-6"
-                    color="error"
-                    :disabled="!username || !password ? true : false"
+                    color="primary"
+                    :disabled="
+                      !username || !password ? true : isLoading ? true : false
+                    "
                     @click="submit"
                     block
                   >
@@ -66,6 +70,9 @@
 
 <script>
 import { mdiAccountCircle, mdiAccount, mdiEye, mdiEyeOff } from "@mdi/js";
+import axios from "axios";
+const LOGIN_URL =
+  "http://localhost/laravel/learning/api/basic_api/public/api/v1/login";
 
 export default {
   name: "Login",
@@ -79,11 +86,21 @@ export default {
       mdiEye,
       mdiEyeOff
     },
-    isShowPassword: false
+    isShowPassword: false,
+    isLoading: false
   }),
 
   methods: {
-    submit: function() {}
+    async submit() {
+      this.isLoading = true;
+      const { data } = await axios.post(LOGIN_URL, {
+        username: this.username,
+        password: this.password
+      });
+
+      this.isLoading = false;
+      console.log(data);
+    }
   }
 };
 </script>
