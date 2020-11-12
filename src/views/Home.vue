@@ -1,28 +1,23 @@
 <template>
-  <div class="home">
-    <div>
-      <v-app-bar color="primary" dense>
-        <v-app-bar-nav-icon></v-app-bar-nav-icon>
+  <div>
+    <v-app-bar color="primary" dense dark>
+      <v-app-title>Page title</v-app-title>
 
-        <v-toolbar-title>Page title</v-toolbar-title>
+      <v-spacer></v-spacer>
 
-        <v-spacer></v-spacer>
-
-        <v-menu left bottom>
-          <template v-slot:activator="{ on, attrs }">
-            <v-btn icon v-bind="attrs" v-on="on">
-              <span @click="logout()">{{ getAuthenticate().name }}</span>
-            </v-btn>
-          </template>
-
-          <v-list>
-            <v-list-item>
-              <v-list-item-title>Option </v-list-item-title>
-            </v-list-item>
-          </v-list>
-        </v-menu>
-      </v-app-bar>
-    </div>
+      <v-menu offset-y>
+        <template v-slot:activator="{ on, attrs }">
+          <v-btn color="primary" dark v-bind="attrs" v-on="on">
+            {{ getAuthenticate().name }}
+          </v-btn>
+        </template>
+        <v-list>
+          <v-list-item @click="logout()">
+            <v-list-item-title>Log out</v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
+    </v-app-bar>
   </div>
 </template>
 
@@ -34,6 +29,10 @@ export default {
     localStorage.getItem("catchUser")
       ? JSON.parse(localStorage.getItem("catchUser"))
       : this.$router.push("/login");
+  },
+
+  data: () => {
+    return {};
   },
 
   methods: {
@@ -50,8 +49,8 @@ export default {
     },
 
     logout() {
-      localStorage.clear();
       this.$router.push("/login");
+      localStorage.clear();
     }
   }
 };
