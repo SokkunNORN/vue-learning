@@ -21,43 +21,48 @@
                   </div>
 
                   <h2 class="mt-8 mb-8 text-center">Login</h2>
+                  <v-form @submit.prevent="submit">
+                    <v-text-field
+                      label="Username"
+                      type="text"
+                      :append-icon="icons.mdiAccount"
+                      v-model="username"
+                      :rules="[
+                        () => !!username || 'Username field is required!'
+                      ]"
+                      :disabled="isLoading"
+                      outlined
+                      dense
+                    ></v-text-field>
 
-                  <v-text-field
-                    label="Username"
-                    type="text"
-                    :append-icon="icons.mdiAccount"
-                    v-model="username"
-                    :rules="[() => !!username || 'Username field is required!']"
-                    :disabled="isLoading"
-                    outlined
-                    dense
-                  ></v-text-field>
+                    <v-text-field
+                      label="Password"
+                      :type="isShowPassword ? 'text' : 'password'"
+                      :append-icon="
+                        isShowPassword ? icons.mdiEye : icons.mdiEyeOff
+                      "
+                      @click:append="isShowPassword = !isShowPassword"
+                      v-model="password"
+                      :rules="[
+                        () => !!password || 'Password field is required!'
+                      ]"
+                      :disabled="isLoading"
+                      outlined
+                      dense
+                    ></v-text-field>
 
-                  <v-text-field
-                    label="Password"
-                    :type="isShowPassword ? 'text' : 'password'"
-                    :append-icon="
-                      isShowPassword ? icons.mdiEye : icons.mdiEyeOff
-                    "
-                    @click:append="isShowPassword = !isShowPassword"
-                    v-model="password"
-                    :rules="[() => !!password || 'Password field is required!']"
-                    :disabled="isLoading"
-                    outlined
-                    dense
-                  ></v-text-field>
-
-                  <v-btn
-                    class="mb-4 mt-6"
-                    color="primary"
-                    :disabled="
-                      !username || !password ? true : isLoading ? true : false
-                    "
-                    @click="submit"
-                    block
-                  >
-                    Login
-                  </v-btn>
+                    <v-btn
+                      class="mb-4 mt-6"
+                      color="primary"
+                      type="submit"
+                      :disabled="
+                        !username || !password ? true : isLoading ? true : false
+                      "
+                      block
+                    >
+                      Login
+                    </v-btn>
+                  </v-form>
                 </v-card-text>
               </v-card>
             </v-col>
@@ -70,9 +75,7 @@
 
 <script>
 import { mdiAccountCircle, mdiAccount, mdiEye, mdiEyeOff } from "@mdi/js";
-import axios from "axios";
-const LOGIN_URL =
-  "http://localhost/laravel/learning/api/basic_api/public/api/v1/login";
+import { login } from "../../api/auth";
 
 export default {
   name: "Login",
@@ -93,13 +96,8 @@ export default {
   methods: {
     async submit() {
       this.isLoading = true;
-      const { data } = await axios.post(LOGIN_URL, {
-        username: this.username,
-        password: this.password
-      });
-
+      await login(this.username, this.password);
       this.isLoading = false;
-      localStorage.setItem("catchUser", JSON.stringify(data));
       this.$router.push("/");
     }
   }
