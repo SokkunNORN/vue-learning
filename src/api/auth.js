@@ -5,6 +5,7 @@ const LOGIN_URL =
   "http://localhost/laravel/learning/api/basic_api/public/api/v1/login";
 
 export async function login(username, password) {
+  sessionStorage.clear();
   const { data } = await axios.post(LOGIN_URL, {
     username: username,
     password: password
@@ -13,7 +14,7 @@ export async function login(username, password) {
   setCachedUser(data);
 
   try {
-    axios.defaults.headers.common.Authorization = `Bearer ${cache.token}`;
+    axios.defaults.headers.common["Authorization"] = `Bearer ${cache.token}`;
     // eslint-disable-next-line no-empty
   } catch {}
 }
