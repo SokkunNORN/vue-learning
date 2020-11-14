@@ -94,11 +94,16 @@ export default {
   }),
 
   methods: {
+    redirect: function() {
+      this.$router.push({ name: "redirect.guard" });
+    },
+
     async submit() {
       this.isLoading = true;
       await login(this.username, this.password);
       this.isLoading = false;
-      this.$router.push("/");
+
+      this.redirect();
     }
   }
 };
