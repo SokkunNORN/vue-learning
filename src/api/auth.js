@@ -11,10 +11,12 @@ export async function login(username, password) {
     password: password
   });
 
-  setCachedUser(data);
+  if (data.status.errorCode == 0) {
+    setCachedUser(data.data);
 
-  try {
-    axios.defaults.headers.common["Authorization"] = `Bearer ${cache.token}`;
-    // eslint-disable-next-line no-empty
-  } catch {}
+    try {
+      axios.defaults.headers.common["Authorization"] = `Bearer ${cache.token}`;
+      // eslint-disable-next-line no-empty
+    } catch {}
+  }
 }
