@@ -99,11 +99,25 @@ export default {
     },
 
     async submit() {
-      this.isLoading = true;
-      await login(this.username, this.password);
-      this.isLoading = false;
+      try {
+        this.isLoading = true;
+        await login(this.username, this.password);
+        this.isLoading = false;
 
-      this.redirect();
+        this.redirect();
+      } catch (error) {
+        this.isLoading = false;
+        this.handleErrorMassage(error);
+      }
+    },
+
+    handleErrorMassage(error) {
+      try {
+        const { response } = error;
+        alert(response.data.status.errorMessage);
+      } catch (err) {
+        this.errorHandler(err);
+      }
     }
   }
 };
