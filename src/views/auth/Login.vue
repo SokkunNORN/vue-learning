@@ -76,6 +76,7 @@
 <script>
 import { mdiAccountCircle, mdiAccount, mdiEye, mdiEyeOff } from "@mdi/js";
 import { login } from "../../api/auth";
+import { handleErrorMassage } from "../../mixins/handleMessage";
 
 export default {
   name: "Login",
@@ -107,16 +108,7 @@ export default {
         this.redirect();
       } catch (error) {
         this.isLoading = false;
-        this.handleErrorMassage(error);
-      }
-    },
-
-    handleErrorMassage(error) {
-      try {
-        const { response } = error;
-        alert(response.data.status.errorMessage);
-      } catch (err) {
-        this.errorHandler(err);
+        handleErrorMassage(error);
       }
     }
   }
